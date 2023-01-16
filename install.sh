@@ -1,1 +1,1 @@
-conda create -n ffcv python=3.9 cupy pkg-config compilers libjpeg-turbo opencv pytorch torchvision cudatoolkit=11.3 numba -c pytorch -c conda-forge
+conda create -y -n ffcvx python=3.9 cupy pkg-config compilers libjpeg-turbo opencv tqdm terminaltables psutil numpy=1.23.5 numba pytorch torchvision pytorch-cuda=11.7 -c pytorch -c nvidia -c conda-forge --no-channel-priority

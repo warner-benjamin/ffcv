@@ -36,14 +36,14 @@ from fastargs import get_current_config, Param, Section
 from fastargs.decorators import param
 from fastargs.validation import And, OneOf
 
-from ffcv.fields import IntField, RGBImageField
-from ffcv.fields.decoders import IntDecoder, SimpleRGBImageDecoder
-from ffcv.loader import Loader, OrderOption
-from ffcv.pipeline.operation import Operation
-from ffcv.transforms import RandomHorizontalFlip, Cutout, \
+from ffcvx.fields import IntField, RGBImageField
+from ffcvx.fields.decoders import IntDecoder, SimpleRGBImageDecoder
+from ffcvx.loader import Loader, OrderOption
+from ffcvx.pipeline.operation import Operation
+from ffcvx.transforms import RandomHorizontalFlip, Cutout, \
     RandomTranslate, Convert, ToDevice, ToTensor, ToTorchImage
-from ffcv.transforms.common import Squeeze
-from ffcv.writer import DatasetWriter
+from ffcvx.transforms.common import Squeeze
+from ffcvx.writer import DatasetWriter
 
 Section('training', 'Hyperparameters').params(
     lr=Param(float, 'The learning rate to use', required=True),
@@ -94,7 +94,7 @@ def make_dataloaders(train_dataset=None, val_dataset=None, batch_size=None, num_
             Convert(ch.float16),
             torchvision.transforms.Normalize(CIFAR_MEAN, CIFAR_STD),
         ])
-        
+
         ordering = OrderOption.RANDOM if name == 'train' else OrderOption.SEQUENTIAL
 
         loaders[name] = Loader(paths[name], batch_size=batch_size, num_workers=num_workers,

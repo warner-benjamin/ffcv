@@ -7,12 +7,12 @@ from tqdm import tqdm
 from assertpy import assert_that
 from torch.utils.data import Dataset
 
-from ffcv.writer import DatasetWriter
-from ffcv.reader import Reader
-from ffcv.fields import BytesField, IntField
-from ffcv.pipeline.compiler import Compiler
-from ffcv.memory_managers import OSCacheManager
-from ffcv.libffcv import memcpy
+from ffcvx.writer import DatasetWriter
+from ffcvx.reader import Reader
+from ffcvx.fields import BytesField, IntField
+from ffcvx.pipeline.compiler import Compiler
+from ffcvx.memory_managers import OSCacheManager
+from ffcvx.libffcv import memcpy
 
 from ..decorator import benchmark
 from ..benchmark import Benchmark
@@ -53,7 +53,7 @@ class MemoryReadBytesBench(Benchmark):
         self.random_reads = random_reads
         self.n = n
         self.compiled = compiled
-        
+
     def __enter__(self):
         self.handle = NamedTemporaryFile()
         handle = self.handle.__enter__()
@@ -84,18 +84,18 @@ class MemoryReadBytesBench(Benchmark):
             indices = np.arange(self.num_samples)[:self.n]
 
         addresses = reader.alloc_table['ptr'][indices]
-        
+
         self.buffer = np.zeros(self.size_bytes, dtype='<u1')
-        
+
         def code(buff, state):
             for i in range(addresses.shape[0]):
                 memcpy_c(read_fn(addresses[i], state), buff)
-        
+
         self.code = Compiler.compile(code)
 
-    
+
     def run(self):
         self.code(self.buffer, self.context.state)
-        
+
     def __exit__(self, *args):
         self.handle.__exit__(*args)

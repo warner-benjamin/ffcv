@@ -7,13 +7,13 @@ import time
 import numpy as np
 import torchvision
 
-from ffcv.fields import IntField, RGBImageField
-from ffcv.fields.decoders import SimpleRGBImageDecoder
-from ffcv.loader import Loader, OrderOption
-from ffcv.pipeline.compiler import Compiler
-from ffcv.pipeline.operation import Operation, AllocationQuery
-from ffcv.transforms import ToTensor
-from ffcv.writer import DatasetWriter
+from ffcvx.fields import IntField, RGBImageField
+from ffcvx.fields.decoders import SimpleRGBImageDecoder
+from ffcvx.loader import Loader, OrderOption
+from ffcvx.pipeline.compiler import Compiler
+from ffcvx.pipeline.operation import Operation, AllocationQuery
+from ffcvx.transforms import ToTensor
+from ffcvx.writer import DatasetWriter
 from dataclasses import replace
 
 class PickACorner(Operation):

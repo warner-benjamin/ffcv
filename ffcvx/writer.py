@@ -269,7 +269,7 @@ class DatasetWriter():
                               indices: List[int]=None, chunksize=100,
                               shuffle_indices: bool = False):
         """Read dataset from an indexable dataset.
-        See https://docs.ffcv.io/writing_datasets.html#indexable-dataset for sample usage.
+        See https://docs.ffcvx.io/writing_datasets.html#indexable-dataset for sample usage.
 
         Parameters
         ----------
@@ -300,7 +300,7 @@ class DatasetWriter():
 
     def from_webdataset(self, shards: List[str], pipeline: Callable):
         """Read from webdataset-like format.
-        See https://docs.ffcv.io/writing_datasets.html#webdataset for sample usage.
+        See https://docs.ffcvx.io/writing_datasets.html#webdataset for sample usage.
 
         Parameters
         ----------

@@ -8,24 +8,24 @@ import os
 from assertpy import assert_that
 from tempfile import NamedTemporaryFile
 
-from ffcv.writer import DatasetWriter
-from ffcv.reader import Reader
-from ffcv.fields import IntField, RGBImageField
-from ffcv.pipeline.compiler import Compiler
-from ffcv.memory_managers import OSCacheManager
+from ffcvx.writer import DatasetWriter
+from ffcvx.reader import Reader
+from ffcvx.fields import IntField, RGBImageField
+from ffcvx.pipeline.compiler import Compiler
+from ffcvx.memory_managers import OSCacheManager
 
 class DummyDataset(Dataset):
 
     def __init__(self, length):
         self.length = length
-        
+
     def __len__(self):
         return self.length
 
     def __getitem__(self, index):
         if index >= self.length:
             raise IndexError
-        
+
         np.random.seed(37 + index)
         dims = tuple([128, 128, 3])
         image_data = np.random.randint(low=0, high=255, size=dims, dtype='uint8')
@@ -45,11 +45,11 @@ def create_and_validate(length, mode='raw', compile=False):
         }, num_workers=2)
 
         writer.from_indexed_dataset(dataset, chunksize=5)
-            
+
         reader = Reader(name)
         manager = OSCacheManager(reader)
         context = manager.schedule_epoch(np.array([0, 1]))
-        
+
         Compiler.set_enabled(compile)
 
         with context:
@@ -61,7 +61,7 @@ def create_and_validate(length, mode='raw', compile=False):
 
         assert_that(reader.metadata).is_length(length)
         buff = np.zeros((1, 128, 128, 3), dtype='uint8')
-        
+
         for i in range(length):
             result = decode(np.array([i]), buff, reader.metadata['f1'], context.state)[0]
             _, ref_image = dataset[i]
@@ -71,7 +71,7 @@ def create_and_validate(length, mode='raw', compile=False):
                 assert_that(dist.mean()).is_less_than(80)
             else:
                 assert_that(np.all(ref_image == result)).is_true()
-                
+
 def test_simple_image_dataset_raw():
     create_and_validate(500, 'raw')
 

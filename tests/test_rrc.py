@@ -1,5 +1,5 @@
-from ffcv.transforms.ops import ToTensor
-from ffcv.fields.rgb_image import RandomResizedCropRGBImageDecoder, SimpleRGBImageDecoder, CenterCropRGBImageDecoder
+from ffcvx.transforms.ops import ToTensor
+from ffcvx.fields.rgb_image import RandomResizedCropRGBImageDecoder, SimpleRGBImageDecoder, CenterCropRGBImageDecoder
 import numpy as np
 import torch as ch
 from torch.utils.data import Dataset
@@ -8,17 +8,17 @@ from tempfile import NamedTemporaryFile
 from torchvision.datasets import CIFAR10
 from torch.utils.data import Subset
 
-from ffcv.writer import DatasetWriter
-from ffcv.fields import IntField, RGBImageField
-from ffcv.loader import Loader
-from ffcv.pipeline.compiler import Compiler
+from ffcvx.writer import DatasetWriter
+from ffcvx.fields import IntField, RGBImageField
+from ffcvx.loader import Loader
+from ffcvx.pipeline.compiler import Compiler
 
 class DummyDataset(Dataset):
 
     def __init__(self, length, size_range):
         self.length = length
         self.size_range = size_range
-        
+
     def __len__(self):
         return self.length
 
@@ -39,7 +39,7 @@ def create_and_validate(length, decoder, size, mode='raw', compile=False):
 
     with NamedTemporaryFile() as handle:
         name = handle.name
-        
+
         fields = {
             'index': IntField(),
             'value': RGBImageField(write_mode=mode)
@@ -48,14 +48,14 @@ def create_and_validate(length, decoder, size, mode='raw', compile=False):
         writer = DatasetWriter(name, fields, num_workers=2)
 
         writer.from_indexed_dataset(dataset, chunksize=5)
-            
+
         Compiler.set_enabled(compile)
-        
+
         loader = Loader(name, batch_size=5, num_workers=2,
                         pipelines={
                             'value': [decoder, ToTensor()]
                         })
-        
+
         for index, images in loader:
             for i, image in zip(index, images):
                 assert_that(image.shape).is_equal_to((size[0], size[1], 3))
@@ -63,7 +63,7 @@ def create_and_validate(length, decoder, size, mode='raw', compile=False):
                     assert_that(ch.all((image == (i % 255)).reshape(-1))).is_true()
                 else:
                     assert_that(ch.all(ch.abs(image - (i % 255)) < 2)).is_true
-                
+
 
 def test_simple_image_decoder_fails_with_variable_images():
     decoder = SimpleRGBImageDecoder()

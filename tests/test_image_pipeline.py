@@ -6,10 +6,10 @@ from tempfile import NamedTemporaryFile
 from torchvision.datasets import CIFAR10
 from torch.utils.data import Subset
 
-from ffcv.writer import DatasetWriter
-from ffcv.fields import IntField, RGBImageField
-from ffcv.loader import Loader
-from ffcv.pipeline.compiler import Compiler
+from ffcvx.writer import DatasetWriter
+from ffcvx.fields import IntField, RGBImageField
+from ffcvx.loader import Loader
+from ffcvx.pipeline.compiler import Compiler
 
 class DummyDataset(Dataset):
 
@@ -18,7 +18,7 @@ class DummyDataset(Dataset):
         self.height = height
         self.width = width
         self.reversed = reversed
-        
+
     def __len__(self):
         return self.length
 
@@ -38,12 +38,12 @@ def create_and_validate(length, mode='raw', reversed=False):
 
     with NamedTemporaryFile() as handle:
         name = handle.name
-        
+
         fields = {
             'index': IntField(),
             'value': RGBImageField(write_mode=mode, jpeg_quality=95)
         }
-        
+
         if reversed:
             fields = {
                 'value': RGBImageField(write_mode=mode, jpeg_quality=95),
@@ -53,11 +53,11 @@ def create_and_validate(length, mode='raw', reversed=False):
         writer = DatasetWriter(name, fields, num_workers=2)
 
         writer.from_indexed_dataset(dataset, chunksize=5)
-            
+
         Compiler.set_enabled(False)
-        
+
         loader = Loader(name, batch_size=5, num_workers=2)
-        
+
         for res in loader:
             if not reversed:
                 index, images  = res
@@ -69,14 +69,14 @@ def create_and_validate(length, mode='raw', reversed=False):
                     assert_that(ch.all((image == (i % 255)).reshape(-1))).is_true()
                 else:
                     assert_that(ch.all((image == (i % 255)).reshape(-1))).is_true()
-                
+
 def make_and_read_cifar_subset(length):
     my_dataset = Subset(CIFAR10(root='/tmp', train=True, download=True), range(length))
 
     with NamedTemporaryFile() as handle:
         name = handle.name
         writer = DatasetWriter(name, {
-            'image': RGBImageField(write_mode='smart', 
+            'image': RGBImageField(write_mode='smart',
                                 max_resolution=32),
             'label': IntField(),
         }, num_workers=2)
@@ -84,9 +84,9 @@ def make_and_read_cifar_subset(length):
         writer.from_indexed_dataset(my_dataset, chunksize=10)
 
         Compiler.set_enabled(False)
-        
+
         loader = Loader(name, batch_size=5, num_workers=2)
-        
+
         for index, images in loader:
             pass
 

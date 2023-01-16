@@ -12,8 +12,8 @@ from fastargs.decorators import param
 from fastargs import Param, Section
 from fastargs.validation import And, OneOf
 
-from ffcv.writer import DatasetWriter
-from ffcv.fields import IntField, RGBImageField
+from ffcvx.writer import DatasetWriter
+from ffcvx.fields import IntField, RGBImageField
 
 Section('data', 'arguments to give the writer').params(
     train_dataset=Param(str, 'Where to write the new dataset', required=True),

@@ -2,16 +2,16 @@ import string
 from ctypes import pointer
 from tempfile import NamedTemporaryFile
 from collections import defaultdict
-from assertpy.assertpy import assert_that
+from multiprocessing import cpu_count
 
 from assertpy import assert_that
 import numpy as np
 from torch.utils.data import Dataset
-from ffcv import DatasetWriter
-from ffcv.fields import IntField, JSONField
-from ffcv.fields.bytes import BytesDecoder
-from ffcv.fields.basics import IntDecoder
-from ffcv import Loader
+from ffcvx import DatasetWriter
+from ffcvx.fields import IntField, JSONField
+from ffcvx.fields.bytes import BytesDecoder
+from ffcvx.fields.basics import IntDecoder
+from ffcvx import Loader
 
 options = list(string.ascii_uppercase + string.digits)
 
@@ -46,11 +46,11 @@ def run_test(n_samples):
         writer = DatasetWriter(name, {
             'index': IntField(),
             'activations': JSONField()
-        }, num_workers=3)
+        }, num_workers=min(3, cpu_count()))
 
         writer.from_indexed_dataset(dataset)
 
-        loader = Loader(name, batch_size=3, num_workers=5,
+        loader = Loader(name, batch_size=3, num_workers=min(5, cpu_count()),
                         pipelines={
                             'activations': [BytesDecoder()],
                             'index': [IntDecoder()]

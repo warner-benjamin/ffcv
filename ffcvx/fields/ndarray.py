@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 class NDArrayDecoder(Operation):
     """
-    Default decoder for :class:`~ffcv.fields.NDArrayField`.
+    Default decoder for :class:`~ffcvx.fields.NDArrayField`.
     """
 
     def declare_state_and_memory(self, previous_state: State) -> Tuple[State, AllocationQuery]:
@@ -50,7 +50,7 @@ NDArrayArgsType = np.dtype([
 ])
 
 class NDArrayField(Field):
-    """A subclass of :class:`~ffcv.fields.Field` supporting
+    """A subclass of :class:`~ffcvx.fields.Field` supporting
     multi-dimensional fixed size matrices of any numpy type.
     """
     def __init__(self, dtype:np.dtype, shape:Tuple[int, ...]):
@@ -103,7 +103,7 @@ class NDArrayField(Field):
 
 
 class TorchTensorField(NDArrayField):
-    """A subclass of :class:`~ffcv.fields.Field` supporting
+    """A subclass of :class:`~ffcvx.fields.Field` supporting
     multi-dimensional fixed size matrices of any torch type.
     """
     def __init__(self, dtype:ch.dtype, shape:Tuple[int, ...]):

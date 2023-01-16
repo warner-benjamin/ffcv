@@ -10,11 +10,11 @@ from tqdm import tqdm
 from assertpy import assert_that
 from torch.utils.data import Dataset
 
-from ffcv.writer import DatasetWriter
-from ffcv.reader import Reader
-from ffcv.fields import BytesField, IntField
-from ffcv.pipeline.compiler import Compiler
-from ffcv import Loader
+from ffcvx.writer import DatasetWriter
+from ffcvx.reader import Reader
+from ffcvx.fields import BytesField, IntField
+from ffcvx.pipeline.compiler import Compiler
+from ffcvx import Loader
 
 class DummyDataset(Dataset):
 
@@ -40,7 +40,7 @@ def create_and_run(num_samples, size_bytes):
             'index': IntField(),
             'value': BytesField()
         })
-        
+
         Compiler.set_enabled(True)
 
         with writer:
@@ -49,7 +49,7 @@ def create_and_run(num_samples, size_bytes):
         # Dataset should not be in RAM
         process = psutil.Process(os.getpid())
         assert_that(process.memory_info().rss).is_less_than(total_dataset_size)
-        
+
         loader = Loader(name, 128, 10)
         for _ in tqdm(loader):
             assert_that(process.memory_info().rss).is_less_than(total_dataset_size)

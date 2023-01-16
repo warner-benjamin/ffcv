@@ -86,28 +86,26 @@ extension_kwargs = {
 if platform.system() == 'Windows':
     extension_kwargs = pkgconfig_windows('opencv4', extension_kwargs)
     extension_kwargs = pkgconfig_windows('libturbojpeg', extension_kwargs)
-
     extension_kwargs = pkgconfig_windows('pthread', extension_kwargs)
 else:
     try:
         extension_kwargs = pkgconfig('opencv4', extension_kwargs)
     except RuntimeError:
-        pass # Fallback to opencv package
-    extension_kwargs = pkgconfig('opencv', extension_kwargs)
+        # Fallback to opencv package
+        extension_kwargs = pkgconfig('opencv', extension_kwargs)
     extension_kwargs = pkgconfig('libturbojpeg', extension_kwargs)
-
     extension_kwargs['libraries'].append('pthread')
 
 
-libffcv = Extension('ffcv._libffcv',
+libffcv = Extension('ffcvx._libffcv',
                         **extension_kwargs)
 
-setup(name='ffcv',
-      version='0.0.3rc1',
-      description=' FFCV: Fast Forward Computer Vision ',
-      author='MadryLab',
-      author_email='leclerc@mit.edu',
-      url='https://github.com/libffcv/ffcv',
+setup(name='ffcvx',
+      version='0.0.4',
+      description='FFCVX: Fast Forward Computer Vision',
+      author='FFCV Team, Benjamin Warner',
+      author_email='me@benjaminwarner.dev',
+      url='https://github.com/warner-benjamin/ffcvx',
       license_files = ('LICENSE.txt',),
       packages=find_packages(),
       long_description=long_description,

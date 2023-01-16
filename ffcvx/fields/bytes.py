@@ -38,7 +38,7 @@ class BytesDecoder(Operation):
 
 class BytesField(Field):
     """
-    A subclass of :class:`~ffcv.fields.Field` supporting variable-length byte
+    A subclass of :class:`~ffcvx.fields.Field` supporting variable-length byte
     arrays.
 
     Intended for use with data such as text or raw data which may not have a

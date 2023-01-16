@@ -9,14 +9,14 @@ from tempfile import NamedTemporaryFile
 from torchvision.datasets import CIFAR10
 from torchvision.utils import save_image, make_grid
 from torch.utils.data import Subset
-from ffcv.fields.basics import IntDecoder
-from ffcv.fields.rgb_image import SimpleRGBImageDecoder
+from ffcvx.fields.basics import IntDecoder
+from ffcvx.fields.rgb_image import SimpleRGBImageDecoder
 
-from ffcv.writer import DatasetWriter
-from ffcv.fields import IntField, RGBImageField
-from ffcv.loader import Loader
-from ffcv.pipeline.compiler import Compiler
-from ffcv.transforms import *
+from ffcvx.writer import DatasetWriter
+from ffcvx.fields import IntField, RGBImageField
+from ffcvx.loader import Loader
+from ffcvx.pipeline.compiler import Compiler
+from ffcvx.transforms import *
 
 SAVE_IMAGES = True
 IMAGES_TMP_PATH = '/tmp/ffcv_augtest_output'
@@ -35,7 +35,7 @@ def run_test(length, pipeline, compile=False):
     with NamedTemporaryFile() as handle:
         name = handle.name
         writer = DatasetWriter(name, {
-            'image': RGBImageField(write_mode='smart', 
+            'image': RGBImageField(write_mode='smart',
                                 max_resolution=32),
             'label': IntField(),
         }, num_workers=2)
@@ -61,12 +61,12 @@ def run_test(length, pipeline, compile=False):
             print(images.shape, original_images.shape)
             tot_indices += labels.shape[0]
             tot_images += images.shape[0]
-            
+
             for label, original_label in zip(labels, original_labels):
                 assert_that(label).is_equal_to(original_label)
-            
+
             if SAVE_IMAGES:
-                save_image(make_grid(ch.concat([images, original_images])/255., images.shape[0]), 
+                save_image(make_grid(ch.concat([images, original_images])/255., images.shape[0]),
                         os.path.join(IMAGES_TMP_PATH, str(uuid.uuid4()) + '.jpeg')
                         )
 
@@ -132,7 +132,7 @@ def test_random_resized_crop():
     for comp in [True, False]:
         run_test(100, [
             SimpleRGBImageDecoder(),
-            RandomResizedCrop(scale=(0.08, 1.0), 
+            RandomResizedCrop(scale=(0.08, 1.0),
                             ratio=(0.75, 4/3),
                             size=32),
             ToTensor(),
@@ -183,7 +183,7 @@ def test_torchvision_random_crop():
         ToTorchImage(),
         tvt.Pad(10),
         tvt.RandomCrop(size=32),
-        ])       
+        ])
 
 def test_torchvision_color_jitter():
     run_test(100, [
@@ -191,7 +191,7 @@ def test_torchvision_color_jitter():
         ToTensor(),
         ToTorchImage(),
         tvt.ColorJitter(.5, .5, .5, .5),
-        ])       
+        ])
 
 
 if __name__ == '__main__':

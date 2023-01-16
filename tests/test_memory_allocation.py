@@ -6,9 +6,9 @@ import os
 from assertpy import assert_that
 from tempfile import NamedTemporaryFile
 
-from ffcv.writer import DatasetWriter
-from ffcv.reader import Reader
-from ffcv.fields import BytesField, IntField
+from ffcvx.writer import DatasetWriter
+from ffcvx.reader import Reader
+from ffcvx.fields import BytesField, IntField
 
 class DummyDataset(Dataset):
 

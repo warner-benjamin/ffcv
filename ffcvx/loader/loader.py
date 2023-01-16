@@ -11,12 +11,11 @@ from collections import defaultdict
 from collections.abc import Collection
 from enum import Enum, unique, auto
 
-from ffcv.fields.base import Field
-
 import torch as ch
 import numpy as np
 
 from .epoch_iterator import EpochIterator
+from ..fields.base import Field
 from ..reader import Reader
 from ..traversal_order.base import TraversalOrder
 from ..traversal_order import Random, Sequential, QuasiRandom
@@ -62,7 +61,7 @@ class Loader:
     num_workers : int
         Number of workers used for data loading. Consider using the actual number of cores instead of the number of threads if you only use JITed augmentations as they usually don't benefit from hyper-threading.
     os_cache : bool
-        Leverages the operating for caching purposes. This is beneficial when there is enough memory to cache the dataset and/or when multiple processes on the same machine training using the same dataset. See https://docs.ffcv.io/performance_guide.html for more information.
+        Leverages the operating for caching purposes. This is beneficial when there is enough memory to cache the dataset and/or when multiple processes on the same machine training using the same dataset. See https://docs.ffcvx.io/performance_guide.html for more information.
     order : Union[OrderOption, TraversalOrder]
         Traversal order, one of: SEQEUNTIAL, RANDOM, QUASI_RANDOM, or a custom TraversalOrder
 
@@ -167,7 +166,7 @@ class Loader:
         self.pipelines = {}
         self.pipeline_specs = {}
         self.field_name_to_f_ix = {}
-        
+
         custom_pipeline_specs = {}
 
         # Creating PipelineSpec objects from the pipeline dict passed
@@ -206,7 +205,7 @@ class Loader:
         self.graph = Graph(self.pipeline_specs, self.reader.handlers,
                            self.field_name_to_f_ix, self.reader.metadata,
                            memory_read)
-        
+
         self.generate_code()
         self.first_traversal_order = self.next_traversal_order()
 
@@ -274,5 +273,5 @@ class Loader:
     def generate_code(self):
         queries, code = self.graph.collect_requirements()
         self.code = self.graph.codegen_all(code)
-        
+
 

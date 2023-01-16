@@ -1,9 +1,9 @@
 import pytest
 import numpy as np
 from uuid import uuid4
-from ffcv.fields.ndarray import NDArrayField, NDArrayDecoder
-from ffcv.writer import DatasetWriter
-from ffcv.loader import Loader, OrderOption
+from ffcvx.fields.ndarray import NDArrayField, NDArrayDecoder
+from ffcvx.writer import DatasetWriter
+from ffcvx.loader import Loader, OrderOption
 from tempfile import NamedTemporaryFile
 
 class StringDecoder(NDArrayDecoder):
@@ -14,7 +14,7 @@ class StringField(NDArrayField):
         self.max_len = max_len
         self.pad_char = pad_char
         super().__init__(np.dtype('uint8'), (max_len,))
-    
+
     def encode(self, destination, field, malloc):
         padded_field = (field + self.pad_char * self.max_len)[:self.max_len]
         field = np.frombuffer(padded_field.encode('ascii'), dtype='uint8')
@@ -51,7 +51,7 @@ def test_string_field():
                     custom_fields={
                         'label': StringField
                     })
-        
+
         all_caps = []
         for x, in loader:
             for cap in x:
@@ -75,4 +75,3 @@ def test_no_custom_field():
                     pipelines={
                         'label': [StringDecoder()]
                     })
-        

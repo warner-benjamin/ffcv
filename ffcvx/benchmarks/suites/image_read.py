@@ -5,11 +5,11 @@ from time import sleep, time
 
 import numpy as np
 from assertpy import assert_that
-from ffcv.fields import BytesField, IntField, RGBImageField
-from ffcv.memory_managers import OSCacheManager
-from ffcv.pipeline.compiler import Compiler
-from ffcv.reader import Reader
-from ffcv.writer import DatasetWriter
+from ffcvx.fields import BytesField, IntField, RGBImageField
+from ffcvx.memory_managers import OSCacheManager
+from ffcvx.pipeline.compiler import Compiler
+from ffcvx.reader import Reader
+from ffcvx.writer import DatasetWriter
 from torch.utils.data import Dataset
 from tqdm import tqdm
 
@@ -23,7 +23,7 @@ class DummyDataset(Dataset):
     def __init__(self, length, size):
         self.length = length
         self.size = size
-        
+
     def __len__(self):
         return self.length
 
@@ -66,7 +66,7 @@ class DummyDataset(Dataset):
     ]
 })
 class ImageReadBench(Benchmark):
-    
+
     def __init__(self, n, length, mode, size, random_reads, compile, num_workers, batch_size):
         self.n = n
         self.mode = mode
@@ -77,7 +77,7 @@ class ImageReadBench(Benchmark):
         self.compile = compile
         self.random_reads = random_reads
         self.dataset = DummyDataset(length, size)
-        
+
     def __enter__(self):
         self.handle = NamedTemporaryFile()
         self.handle.__enter__()
@@ -108,20 +108,20 @@ class ImageReadBench(Benchmark):
 
         decode = decoder.generate_code()
         decode = Compiler.compile(decode)
-        
+
         self.buff = np.zeros((self.batch_size, *self.size, 3), dtype='uint8')
-        
+
         if self.random_reads:
             self.indices = np.random.choice(self.n, size=self.n, replace=False)
         else:
             self.indices = np.arange(self.n)
-            
+
         def code(indices, buff, state):
             result = 0
             for i in range(0, len(indices), self.batch_size):
                 result += decode(indices[i:i + self.batch_size], buff, reader.metadata['f1'], state)[0, 5, 5]
             return result
-                
+
         self.code = code
 
     def run(self):

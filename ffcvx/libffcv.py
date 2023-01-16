@@ -3,9 +3,9 @@ from numba import njit
 import numpy as np
 import platform
 from ctypes import CDLL, c_int64, c_uint8, c_uint64, POINTER, c_void_p, c_uint32, c_bool, cdll
-import ffcv._libffcv
+import ffcvx._libffcv
 
-lib = CDLL(ffcv._libffcv.__file__)
+lib = CDLL(ffcvx._libffcv.__file__)
 if platform.system() == "Windows":
     libc = cdll.msvcrt
     read_c = libc._read

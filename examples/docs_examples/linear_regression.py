@@ -9,12 +9,12 @@ import numpy as np
 import pickle as pkl
 import torch as ch
 from torch.utils.data import TensorDataset, DataLoader
-from ffcv.fields import NDArrayField, FloatField
-from ffcv.fields.basics import FloatDecoder
-from ffcv.fields.decoders import NDArrayDecoder
-from ffcv.loader import Loader, OrderOption
-from ffcv.writer import DatasetWriter
-from ffcv.transforms import ToTensor, ToDevice, Squeeze
+from ffcvx.fields import NDArrayField, FloatField
+from ffcvx.fields.basics import FloatDecoder
+from ffcvx.fields.decoders import NDArrayDecoder
+from ffcvx.loader import Loader, OrderOption
+from ffcvx.writer import DatasetWriter
+from ffcvx.transforms import ToTensor, ToDevice, Squeeze
 import os
 
 # 1,000,000 inputs each of dimension 10,000 = 40GB of data

@@ -10,10 +10,10 @@ from torch.utils.data import Dataset, distributed
 from torch.multiprocessing import spawn, Queue
 from torch.distributed import init_process_group
 
-from ffcv.loader.loader import ORDER_TYPE, OrderOption
-from ffcv.writer import DatasetWriter
-from ffcv.fields import IntField, BytesField
-from ffcv import Loader
+from ffcvx.loader.loader import ORDER_TYPE, OrderOption
+from ffcvx.writer import DatasetWriter
+from ffcvx.fields import IntField, BytesField
+from ffcvx import Loader
 
 class DummyDataset(Dataset):
 
@@ -33,18 +33,18 @@ def process_work(rank, world_size, fname, order, sync_fname, out_folder, indices
     sync_url = f'file://{sync_fname}'
     if world_size > 1:
         init_process_group('nccl', sync_url, rank=rank, world_size=world_size)
-    
+
     loader = Loader(fname, 8, num_workers=2, order=order, drop_last=False,
                     distributed=world_size > 1, indices=indices)
-    
+
     result = []
     for _ in range(3):
         content = np.concatenate([x[0].numpy().reshape(-1).copy() for x in loader])
         result.append(content)
     result = np.stack(result)
-    
+
     np.save(path.join(out_folder, f"result-{rank}.npy"), result)
-    
+
 
 def prep_and_run_test(num_workers, order, with_indices=False):
     length = 600
@@ -62,20 +62,20 @@ def prep_and_run_test(num_workers, order, with_indices=False):
             })
 
             writer.from_indexed_dataset(dataset)
-                
+
             args = (num_workers, name, order, sync_file, folder, indices)
             if num_workers > 1:
                 spawn(process_work, nprocs=num_workers, args=args)
             else:
                 process_work(*((0, ) + args))
-            
+
             results = []
             for r in range(num_workers):
                 array = np.load(path.join(folder,f"result-{r}.npy"))
                 results.append(array)
 
             results = np.concatenate(results, 1)
-            
+
             # For each epoch
             for i in range(results.shape[0]):
                 if not with_indices:
@@ -83,7 +83,7 @@ def prep_and_run_test(num_workers, order, with_indices=False):
                         assert_that((results[i] == results[i + 1]).all()).is_true()
                     if order != OrderOption.SEQUENTIAL and i < results.shape[0] - 1:
                         assert_that((results[i] == results[i + 1]).all()).is_false()
-                        
+
                     epoch_content = Counter(results[i])
                     indices_gotten = np.array(sorted(list(epoch_content.keys())))
                     assert_that(np.all(np.arange(length) == indices_gotten)).is_true()
@@ -91,7 +91,7 @@ def prep_and_run_test(num_workers, order, with_indices=False):
                     assert_that(max(epoch_content.values())).is_less_than_or_equal_to(2)
                 else:
                     assert_that(set(results[i])).is_equal_to(set(indices))
-                
+
 
 def test_traversal_sequential_1():
     prep_and_run_test(1, OrderOption.SEQUENTIAL)

@@ -11,11 +11,11 @@ except ImportError:
 from collections import defaultdict
 from typing import Callable, Dict, List, Optional, Sequence, Set
 from abc import ABC, abstractmethod
-from ffcv.pipeline.allocation_query import AllocationQuery
 
-from ffcv.pipeline.pipeline_spec import PipelineSpec
-from ffcv.pipeline.compiler import Compiler
-from ffcv.pipeline.allocation_query import allocate_query
+from .allocation_query import AllocationQuery
+from .pipeline_spec import PipelineSpec
+from .compiler import Compiler
+from .allocation_query import allocate_query
 from .operation import Operation
 from ..transforms import ModuleWrapper
 from .state import State
@@ -46,25 +46,25 @@ class Node(ABC):
     @abstractmethod
     def parent(self):
         raise NotImplemented()
-    
+
     @property
     @abstractmethod
     def arg_id(self):
         raise NotImplemented()
-    
+
     @property
     @abstractmethod
     def result_id(self):
         raise NotImplemented()
-    
+
     @property
     @abstractmethod
     def result_id(self):
         raise NotImplemented()
-    
+
     def get_shared_code_ast(self, done_ops):
         return ast.Pass()
-    
+
     @abstractmethod
     def generate_code(self):
         raise NotImplemented()
@@ -277,7 +277,7 @@ class Graph:
                 self.nodes.append(node)
 
             self.leaf_nodes[output_name] = node
-            
+
         # resolve references
         for node in self.nodes:
             if isinstance(node, RefNode):
@@ -290,7 +290,7 @@ class Graph:
             self.node_to_id[node] = node.id
             if node.parent is not None:
                 self.adjacency_list[node.parent].append(node)
-                
+
 
     def collect_requirements(self, state=INITIAL_STATE,
                              current_node: Node = None,
@@ -330,7 +330,7 @@ class Graph:
                 next_state, allocation = operation.declare_state_and_memory(state)
                 state_allocation = operation.declare_shared_memory(state)
 
-                if next_state.device.type != 'cuda' and isinstance(operation,
+                if next_state.device != ch.device('cuda') and isinstance(operation,
                     ModuleWrapper):
                     msg = ("Using a pytorch transform on the CPU is extremely"
                         "detrimental to the performance, consider moving the augmentation"

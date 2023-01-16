@@ -82,7 +82,7 @@ def get_center_crop(height, width, _, ratio):
 
 
 class SimpleRGBImageDecoder(Operation):
-    """Most basic decoder for the :class:`~ffcv.fields.RGBImageField`.
+    """Most basic decoder for the :class:`~ffcvx.fields.RGBImageField`.
 
     It only supports dataset with constant image resolution and will simply read (potentially decompress) and pass the images as is.
     """
@@ -140,7 +140,7 @@ instead."""
 
 
 class ResizedCropRGBImageDecoder(SimpleRGBImageDecoder, metaclass=ABCMeta):
-    """Abstract decoder for :class:`~ffcv.fields.RGBImageField` that performs a crop and and a resize operation.
+    """Abstract decoder for :class:`~ffcvx.fields.RGBImageField` that performs a crop and and a resize operation.
 
     It supports both variable and constant resolution datasets.
     """
@@ -218,7 +218,7 @@ class ResizedCropRGBImageDecoder(SimpleRGBImageDecoder, metaclass=ABCMeta):
 
 
 class RandomResizedCropRGBImageDecoder(ResizedCropRGBImageDecoder):
-    """Decoder for :class:`~ffcv.fields.RGBImageField` that performs a Random crop and and a resize operation.
+    """Decoder for :class:`~ffcvx.fields.RGBImageField` that performs a Random crop and and a resize operation.
 
     It supports both variable and constant resolution datasets.
 
@@ -243,7 +243,7 @@ class RandomResizedCropRGBImageDecoder(ResizedCropRGBImageDecoder):
 
 
 class CenterCropRGBImageDecoder(ResizedCropRGBImageDecoder):
-    """Decoder for :class:`~ffcv.fields.RGBImageField` that performs a center crop followed by a resize operation.
+    """Decoder for :class:`~ffcvx.fields.RGBImageField` that performs a center crop followed by a resize operation.
 
     It supports both variable and constant resolution datasets.
 
@@ -267,7 +267,7 @@ class CenterCropRGBImageDecoder(ResizedCropRGBImageDecoder):
 
 class RGBImageField(Field):
     """
-    A subclass of :class:`~ffcv.fields.Field` supporting RGB image data.
+    A subclass of :class:`~ffcvx.fields.Field` supporting RGB image data.
 
     Parameters
     ----------

@@ -5,7 +5,7 @@ import numpy as np
 from typing import Callable, Optional, Tuple
 from dataclasses import replace
 
-from ffcv.pipeline.compiler import Compiler
+from ..pipeline.compiler import Compiler
 from ..pipeline.allocation_query import AllocationQuery
 from ..pipeline.operation import Operation
 from ..pipeline.state import State
