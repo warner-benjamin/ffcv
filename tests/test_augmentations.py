@@ -83,6 +83,36 @@ def test_cutout():
         ], comp)
 
 
+def test_random_cutout():
+    for comp in [True, False]:
+        run_test(100, [
+            SimpleRGBImageDecoder(),
+            RandomCutout(0.75, 8),
+            ToTensor(),
+            ToTorchImage()
+        ], comp)
+
+
+def test_random_erasing():
+    for comp in [True, False]:
+        run_test(100, [
+            SimpleRGBImageDecoder(),
+            RandomErasing(.75, max_count=3),
+            ToTensor(),
+            ToTorchImage()
+        ], comp)
+
+
+def test_random_erasing_slow():
+    for comp in [True, False]:
+        run_test(100, [
+            SimpleRGBImageDecoder(),
+            RandomErasing(.75, fast=False),
+            ToTensor(),
+            ToTorchImage()
+        ], comp)
+
+
 def test_flip():
     for comp in [True, False]:
         run_test(100, [
@@ -196,6 +226,8 @@ def test_torchvision_color_jitter():
 
 if __name__ == '__main__':
     test_cutout()
+    test_random_cutout()
+    test_random_erasing()
     test_flip()
     test_module_wrapper()
     test_mixup()

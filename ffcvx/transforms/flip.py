@@ -42,5 +42,5 @@ class RandomHorizontalFlip(Operation):
         return flip
 
     def declare_state_and_memory(self, previous_state: State) -> Tuple[State, Optional[AllocationQuery]]:
-        return (replace(previous_state, jit_mode=True), 
+        return (replace(previous_state, jit_mode=True),
                 AllocationQuery(previous_state.shape, previous_state.dtype))
