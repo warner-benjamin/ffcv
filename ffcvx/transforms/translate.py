@@ -44,6 +44,7 @@ class RandomTranslate(Operation):
             return images
 
         translate.is_parallel = True
+        translate.cacheable = True
         return translate
 
     def declare_state_and_memory(self, previous_state: State) -> Tuple[State, Optional[AllocationQuery]]:

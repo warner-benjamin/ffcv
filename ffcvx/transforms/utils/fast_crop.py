@@ -1,9 +1,10 @@
 import ctypes
 from numba import njit
 import numpy as np
-from ...libffcv import ctypes_resize
+from ffcvx.libffcv import ctypes_resize
+import ffcvx.config as config
 
-@njit(inline='always')
+@njit(inline='always', cache=config.FFCVX_USE_NUMBA_CACHE)
 def resize_crop(source, start_row, end_row, start_col, end_col, destination):
     ctypes_resize(0,
                   source.ctypes.data,
@@ -13,7 +14,7 @@ def resize_crop(source, start_row, end_row, start_col, end_col, destination):
                   destination.shape[0], destination.shape[1])
 
 
-@njit(parallel=False, fastmath=True, inline='always')
+@njit(parallel=False, fastmath=True, inline='always', cache=config.FFCVX_USE_NUMBA_CACHE)
 def get_random_crop(height, width, scale, ratio):
     area = height * width
     log_ratio = np.log(ratio)
@@ -41,7 +42,7 @@ def get_random_crop(height, width, scale, ratio):
     return i, j, h, w
 
 
-@njit(parallel=False, fastmath=True, inline='always')
+@njit(parallel=False, fastmath=True, inline='always', cache=config.FFCVX_USE_NUMBA_CACHE)
 def get_center_crop(height, width, ratio):
     s = min(height, width)
     c = int(ratio * s)

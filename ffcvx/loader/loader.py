@@ -14,6 +14,7 @@ from enum import Enum, unique, auto
 import torch as ch
 import numpy as np
 
+from ffcvx.config import prep_numba_cache
 from .epoch_iterator import EpochIterator
 from ..fields.base import Field
 from ..reader import Reader
@@ -84,6 +85,8 @@ class Loader:
         Number of batches prepared in advance; balances latency and memory.
     recompile : bool
         Recompile every iteration. This is necessary if the implementation of some augmentations are expected to change during training.
+    force_cache : bool
+        Force use Numba's compile cache regardless of env setting. Incompatible with recompile=True.
     """
     def __init__(self,
                  fname: str,
@@ -100,7 +103,11 @@ class Loader:
                  drop_last: bool = True,
                  batches_ahead: int = 3,
                  recompile: bool = False,  # Recompile at every epoch
+                 force_cache: bool = False
                  ):
+        if recompile:
+            assert recompile!=force_cache, 'Both recompile and force_cache cannot be true'
+        prep_numba_cache(force_cache)
 
         if distributed and order == OrderOption.RANDOM and (seed is None):
             print('Warning: no ordering seed was specified with distributed=True. '

@@ -29,7 +29,7 @@ UNAUGMENTED_PIPELINE=[
     ToTorchImage()
 ]
 
-def run_test(length, pipeline, compile=False):
+def run_test(length, pipeline, compile=False, force_cache=False):
     my_dataset = Subset(CIFAR10(root='/tmp', train=True, download=True), range(length))
 
     with NamedTemporaryFile() as handle:
@@ -48,7 +48,7 @@ def run_test(length, pipeline, compile=False):
             'image': pipeline,
             'label': [IntDecoder(), ToTensor(), Squeeze()]
         },
-        drop_last=False)
+        drop_last=False, force_cache=force_cache)
 
         unaugmented_loader = Loader(name, batch_size=7, num_workers=2, pipelines={
             'image': UNAUGMENTED_PIPELINE,
@@ -73,74 +73,75 @@ def run_test(length, pipeline, compile=False):
         assert_that(tot_indices).is_equal_to(len(my_dataset))
         assert_that(tot_images).is_equal_to(len(my_dataset))
 
+
 def test_cutout():
-    for comp in [True, False]:
+    for args in [(True, False), (False, False), (True, True)]:
         run_test(100, [
             SimpleRGBImageDecoder(),
             Cutout(8),
             ToTensor(),
             ToTorchImage()
-        ], comp)
+        ], *args)
 
 
 def test_random_cutout():
-    for comp in [True, False]:
+    for args in [(True, False), (False, False), (True, True)]:
         run_test(100, [
             SimpleRGBImageDecoder(),
             RandomCutout(0.75, 8),
             ToTensor(),
             ToTorchImage()
-        ], comp)
+        ], *args)
 
 
 def test_random_erasing():
-    for comp in [True, False]:
+    for args in [(True, False), (False, False), (True, True)]:
         run_test(100, [
             SimpleRGBImageDecoder(),
             RandomErasing(.75, max_count=3),
             ToTensor(),
             ToTorchImage()
-        ], comp)
+        ], *args)
 
 
 def test_random_erasing_slow():
-    for comp in [True, False]:
+    for args in [(True, False), (False, False), (True, True)]:
         run_test(100, [
             SimpleRGBImageDecoder(),
             RandomErasing(.75, fast=False),
             ToTensor(),
             ToTorchImage()
-        ], comp)
+        ], *args)
 
 
 def test_flip():
-    for comp in [True, False]:
+    for args in [(True, False), (False, False), (True, True)]:
         run_test(100, [
             SimpleRGBImageDecoder(),
             RandomHorizontalFlip(1.0),
             ToTensor(),
             ToTorchImage()
-        ], comp)
+        ], *args)
 
 
 def test_module_wrapper():
-    for comp in [True, False]:
+    for args in [(True, False), (False, False), (True, True)]:
         run_test(100, [
             SimpleRGBImageDecoder(),
             ToTensor(),
             ToTorchImage(),
             ModuleWrapper(tvt.Grayscale(3)),
-        ], comp)
+        ], *args)
 
 
 def test_mixup():
-    for comp in [True, False]:
+    for args in [(True, False), (False, False), (True, True)]:
         run_test(100, [
             SimpleRGBImageDecoder(),
             ImageMixup(.5, False),
             ToTensor(),
             ToTorchImage()
-        ], comp)
+        ], *args)
 
 
 def test_poison():
@@ -149,17 +150,17 @@ def test_poison():
     mask[:5, :5, 0] = 1
     alpha = np.ones((32, 32))
 
-    for comp in [True, False]:
+    for args in [(True, False), (False, False), (True, True)]:
         run_test(100, [
             SimpleRGBImageDecoder(),
             Poison(mask, alpha, list(range(100))),
             ToTensor(),
             ToTorchImage()
-        ], comp)
+        ], *args)
 
 
 def test_random_resized_crop():
-    for comp in [True, False]:
+    for args in [(True, False), (False, False), (True, True)]:
         run_test(100, [
             SimpleRGBImageDecoder(),
             RandomResizedCrop(scale=(0.08, 1.0),
@@ -167,17 +168,17 @@ def test_random_resized_crop():
                             size=32),
             ToTensor(),
             ToTorchImage()
-        ], comp)
+        ], *args)
 
 
 def test_translate():
-    for comp in [True, False]:
+    for args in [(True, False), (False, False), (True, True)]:
         run_test(100, [
             SimpleRGBImageDecoder(),
             RandomTranslate(padding=10),
             ToTensor(),
             ToTorchImage()
-        ], comp)
+        ], *args)
 
 
 ## Torchvision Transforms
@@ -234,6 +235,17 @@ if __name__ == '__main__':
     test_poison()
     test_random_resized_crop()
     test_translate()
+
+    # # Test again using numba cache
+    # test_cutout(True)
+    # test_random_cutout(True)
+    # test_random_erasing(True)
+    # test_flip(True)
+    # test_module_wrapper(True)
+    # test_mixup(True)
+    # test_poison(True)
+    # test_random_resized_crop(True)
+    # test_translate(True)
 
     ## Torchvision Transforms
     test_torchvision_greyscale()

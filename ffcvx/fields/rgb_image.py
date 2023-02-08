@@ -209,6 +209,7 @@ class ResizedCropRGBImageDecoder(SimpleRGBImageDecoder, metaclass=ABCMeta):
 
             return destination[:len(batch_indices)]
         decode.is_parallel = True
+        decode.cacheable = True
         return decode
 
     @property

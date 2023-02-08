@@ -59,6 +59,7 @@ class Poison(Operation):
             return images
 
         poison.is_parallel = True
+        poison.cacheable = True
         poison.with_indices = True
 
         return poison

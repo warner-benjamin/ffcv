@@ -97,6 +97,7 @@ class RandomErasing(Operation):
             return images
 
         random_erase.is_parallel = True
+        random_erase.cacheable = True
         return random_erase
 
     def declare_state_and_memory(self, previous_state: State) -> Tuple[State, Optional[AllocationQuery]]:

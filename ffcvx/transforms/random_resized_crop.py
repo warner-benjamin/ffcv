@@ -26,7 +26,7 @@ class RandomResizedCrop(Operation):
         self.scale = scale
         self.ratio = ratio
         self.size = size
-        
+
 
     def generate_code(self) -> Callable:
         scale, ratio = self.scale, self.ratio

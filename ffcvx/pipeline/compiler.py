@@ -1,10 +1,9 @@
-import pdb
 from numba import njit, set_num_threads, prange, warnings as nwarnings, get_num_threads
 from numba.core.errors import NumbaPerformanceWarning
 from multiprocessing import cpu_count
 import torch as ch
-import warnings
 
+import ffcvx.config as config
 
 class Compiler:
 
@@ -23,12 +22,15 @@ class Compiler:
     @classmethod
     def compile(cls, code, signature=None):
         parallel = False
+        cache = False
         if hasattr(code, 'is_parallel'):
             parallel = code.is_parallel and cls.num_threads > 1
-        
+        if hasattr(code, 'cacheable'):
+            cache = (config.FFCVX_USE_NUMBA_CACHE or config.FFCVX_USE_NUMBA_OVERIDE) and code.cacheable
+
         if cls.is_enabled:
             return njit(signature, fastmath=True, nogil=True, error_model='numpy',
-                        parallel=parallel)(code)
+                        parallel=parallel, cache=cache)(code)
         return code
 
     @classmethod

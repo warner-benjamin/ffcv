@@ -133,6 +133,7 @@ class RandomSaturation(Operation):
             return images
 
         saturation.is_parallel = True
+        saturation.cacheable = True
         return saturation
 
     def declare_state_and_memory(self, previous_state):

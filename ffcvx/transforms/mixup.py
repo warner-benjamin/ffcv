@@ -85,6 +85,7 @@ class LabelMixup(Operation):
             return temp_array
 
         mixer.is_parallel = True
+        mixer.cacheable = True
         mixer.with_indices = True
 
         return mixer

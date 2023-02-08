@@ -105,6 +105,7 @@ class NormalizeImage(Operation):
             return result
 
         normalize_convert.is_parallel = True
+        normalize_convert.cacheable = True
         normalize_convert.with_indices = True
         return normalize_convert
 

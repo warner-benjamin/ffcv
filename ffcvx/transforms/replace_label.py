@@ -42,6 +42,7 @@ class ReplaceLabel(Operation):
             return labels
 
         replace_label.is_parallel = True
+        replace_label.cacheable = True
         replace_label.with_indices = True
 
         return replace_label

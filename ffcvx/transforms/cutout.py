@@ -46,6 +46,7 @@ class Cutout(Operation):
 
             return images
         cutout_square.is_parallel = True
+        cutout_square.cacheable = True
 
         return cutout_square
 
@@ -91,4 +92,5 @@ class RandomCutout(Cutout):
             return images
 
         cutout_square.is_parallel = True
+        cutout_square.cacheable = True
         return cutout_square

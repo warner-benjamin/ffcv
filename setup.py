@@ -120,5 +120,7 @@ setup(name='ffcvx',
           'tqdm',
           'psutil',
           'numba',
+          "importlib_metadata;python_version<'3.8'",
+          'packaging'
       ]
       )

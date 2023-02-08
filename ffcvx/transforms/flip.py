@@ -39,6 +39,7 @@ class RandomHorizontalFlip(Operation):
             return dst
 
         flip.is_parallel = True
+        flip.cacheable = True
         return flip
 
     def declare_state_and_memory(self, previous_state: State) -> Tuple[State, Optional[AllocationQuery]]:

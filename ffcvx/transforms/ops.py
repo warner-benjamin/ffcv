@@ -128,6 +128,7 @@ class Convert(Operation):
             return inp.type(self.target_dtype)
 
         convert.is_parallel = True
+        convert.cacheable = True
 
         return convert
 
@@ -153,6 +154,7 @@ class View(Operation):
             return inp.view(self.target_dtype)
 
         convert.is_parallel = True
+        convert.cacheable = True
 
         return convert
 
