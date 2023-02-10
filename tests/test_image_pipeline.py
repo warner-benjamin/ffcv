@@ -32,19 +32,33 @@ class DummyDataset(Dataset):
             result = tuple(reversed(result))
         return result
 
-def create_and_validate(length, mode='raw', reversed=False):
+def create_and_validate(length, mode='raw', reversed=False, max_resolution=None,
+                        min_resolution=None, pillow_resize=False):
 
     dataset = DummyDataset(length, 500, 300, reversed=reversed)
 
     with NamedTemporaryFile() as handle:
         name = handle.name
 
-        fields = {
-            'index': IntField(),
-            'value': RGBImageField(write_mode=mode, jpeg_quality=95)
-        }
-
-        if reversed:
+        if not reversed:
+            if max_resolution is not None:
+                fields = {
+                    'index': IntField(),
+                    'value': RGBImageField(write_mode=mode, jpeg_quality=95,
+                                        max_resolution=max_resolution, pillow_resize=pillow_resize)
+                }
+            elif min_resolution is not None:
+                fields = {
+                    'index': IntField(),
+                    'value': RGBImageField(write_mode=mode, jpeg_quality=95,
+                                        min_resolution=min_resolution, pillow_resize=pillow_resize)
+                }
+            else:
+                fields = {
+                    'index': IntField(),
+                    'value': RGBImageField(write_mode=mode, jpeg_quality=95)
+                }
+        else:
             fields = {
                 'value': RGBImageField(write_mode=mode, jpeg_quality=95),
                 'index': IntField()
@@ -65,10 +79,11 @@ def create_and_validate(length, mode='raw', reversed=False):
                 images , index = res
 
             for i, image in zip(index, images):
-                if mode == 'raw':
-                    assert_that(ch.all((image == (i % 255)).reshape(-1))).is_true()
-                else:
-                    assert_that(ch.all((image == (i % 255)).reshape(-1))).is_true()
+                assert_that(ch.all((image == (i % 255)).reshape(-1))).is_true()
+                if max_resolution is not None:
+                    assert_that(image.shape[0] == max_resolution).is_true()
+                if min_resolution is not None:
+                    assert_that(image.shape[1] == min_resolution).is_true()
 
 def make_and_read_cifar_subset(length):
     my_dataset = Subset(CIFAR10(root='/tmp', train=True, download=True), range(length))
@@ -98,6 +113,12 @@ def test_simple_raw_image_pipeline():
 
 def test_simple_raw_image_pipeline_rev():
     create_and_validate(500, 'raw', True)
+
+def test_simple_raw_image_pipeline_max():
+    create_and_validate(500, 'raw', False, max_resolution=400)
+
+def test_simple_raw_image_pipeline_min():
+    create_and_validate(500, 'raw', False, min_resolution=200, pillow_resize=True)
 
 def test_simple_jpg_image_pipeline():
     create_and_validate(500, 'jpg', False)
