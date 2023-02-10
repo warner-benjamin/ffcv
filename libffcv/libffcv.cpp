@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <turbojpeg.h>
 #include <pthread.h>
+#include "ipp_resize.h"
 #ifdef _WIN32
     typedef unsigned __int32 __uint32_t;
     typedef unsigned __int64 __uint64_t;
@@ -30,7 +31,7 @@ extern "C" {
         pthread_key_create(&key_tj_transformer, NULL);
     }
 
-    EXPORT void resize(int64_t cresizer, int64_t source_p, int64_t sx, int64_t sy,
+    EXPORT void cv_resize(int64_t cresizer, int64_t source_p, int64_t sx, int64_t sy,
                 int64_t start_row, int64_t end_row, int64_t start_col, int64_t end_col,
                 int64_t dest_p, int64_t tx, int64_t ty) {
         // TODO use proper arguments type
@@ -39,6 +40,18 @@ extern "C" {
         cv::Mat dest_matrix(tx, ty, CV_8UC3, (uint8_t*) dest_p);
         cv::resize(source_matrix.colRange(start_col, end_col).rowRange(start_row, end_row),
                    dest_matrix, dest_matrix.size(), 0, 0, cv::INTER_AREA);
+    }
+
+    EXPORT int ipp_resize(int ippDataType, void *source_p, void *dest_p,
+                                int img_width, int img_height, int dst_width,
+                                int dst_height, int numChannels, int antialiasing,
+                                int interpolation, int ippBorderType,
+                                double ippBorderValue) {
+
+        return (int)resize_ipp((IppDataType)ippDataType, source_p, dest_p, img_width, img_height,
+                          dst_width, dst_height, numChannels, antialiasing,
+                          (IppiInterpolationType)interpolation, (IppiBorderType)ippBorderType,
+                          ippBorderValue);
     }
 
     EXPORT void my_memcpy(void *source, void* dst, uint64_t size) {

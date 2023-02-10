@@ -1,7 +1,7 @@
 import ctypes
 from numba import njit
 import numpy as np
-from ...libffcv import ctypes_resize
+from ...libffcv import ctypes_cv_resize as ctypes_resize
 
 @njit(inline='always')
 def resize_crop(source, start_row, end_row, start_col, end_col, destination):

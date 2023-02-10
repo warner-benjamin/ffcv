@@ -76,17 +76,20 @@ def pkgconfig(package, kw):
         kw.setdefault(flag_map.get(token[:2]), []).append(token[2:])
     return kw
 
-
-sources = ['./libffcv/libffcv.cpp']
+sources = ['./libffcv/libffcv.cpp',
+           './libffcv/ipp_resize.c',
+           './libffcv/_ipp_util.c',
+]
 
 extension_kwargs = {
     'sources': sources,
-    'include_dirs': []
+    'include_dirs': ['./libffcv']
 }
 if platform.system() == 'Windows':
     extension_kwargs = pkgconfig_windows('opencv4', extension_kwargs)
     extension_kwargs = pkgconfig_windows('libturbojpeg', extension_kwargs)
     extension_kwargs = pkgconfig_windows('pthread', extension_kwargs)
+    extension_kwargs = pkgconfig_windows('ippi', extension_kwargs)
 else:
     try:
         extension_kwargs = pkgconfig('opencv4', extension_kwargs)
@@ -94,11 +97,10 @@ else:
         # Fallback to opencv package
         extension_kwargs = pkgconfig('opencv', extension_kwargs)
     extension_kwargs = pkgconfig('libturbojpeg', extension_kwargs)
-    extension_kwargs['libraries'].append('pthread')
+    extension_kwargs['libraries'].extend(['pthread','ippi'])
 
 
-libffcv = Extension('ffcvx._libffcv',
-                        **extension_kwargs)
+libffcv = Extension('ffcvx._libffcv', **extension_kwargs)
 
 setup(name='ffcvx',
       version='0.0.4',
@@ -119,6 +121,6 @@ setup(name='ffcvx',
           'assertpy',
           'tqdm',
           'psutil',
-          'numba',
-      ]
-      )
+          'numba'
+      ],
+)
