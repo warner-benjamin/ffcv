@@ -49,6 +49,7 @@ def s_print(*a, **b):
 # From https://uploadcare.com/blog/fast-import-of-pillow-images-to-numpy-opencv-arrays/
 # Up to 2.5 times faster with the same functionality and a smaller number of allocations than numpy.asarray(img)
 def pil_to_numpy(img:Image.Image) -> np.ndarray:
+    "Fast conversion of Pillow `Image` to NumPy NDArray"
     img.load()
     # unpack data
     enc = Image._getencoder(img.mode, 'raw', img.mode)

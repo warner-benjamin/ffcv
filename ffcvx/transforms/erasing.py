@@ -90,7 +90,8 @@ class RandomErasing(Operation):
                         )
                         # Fill image with random noise in-place
                         if fast:
-                            images[i, coord[0]:coord[0] + bound[0], coord[1]:coord[1] + bound[1]] = noise[coord[0]:coord[0] + bound[0], coord[1]:coord[1] + bound[1]]
+                            images[i, coord[0]:coord[0] + bound[0], coord[1]:coord[1] + bound[1]] =\
+                                noise[coord[0]:coord[0] + bound[0], coord[1]:coord[1] + bound[1], np.random.permutation(images.shape[3])]
                         else:
                             noise = fill_mean + (fill_std * np.random.randn(bound[0], bound[1], images.shape[3])).astype(images.dtype)
                             images[i, coord[0]:coord[0] + bound[0], coord[1]:coord[1] + bound[1]] = noise

@@ -228,6 +228,7 @@ if __name__ == '__main__':
     test_cutout()
     test_random_cutout()
     test_random_erasing()
+    test_random_erasing_slow()
     test_flip()
     test_module_wrapper()
     test_mixup()
