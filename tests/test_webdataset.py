@@ -8,9 +8,9 @@ import torch as ch
 from torch.utils.data import Dataset
 import webdataset as wds
 
-from ffcvx import DatasetWriter
-from ffcvx.reader import Reader
-from ffcvx.fields import IntField, FloatField
+from ffcv import DatasetWriter
+from ffcv.reader import Reader
+from ffcv.fields import IntField, FloatField
 from test_writer import validate_simple_dataset
 
 field_names = [

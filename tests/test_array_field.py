@@ -8,9 +8,9 @@ import torch as ch
 from assertpy import assert_that
 import numpy as np
 from torch.utils.data import Dataset
-from ffcvx import DatasetWriter
-from ffcvx.fields import IntField, NDArrayField, TorchTensorField
-from ffcvx import Loader
+from ffcv import DatasetWriter
+from ffcv.fields import IntField, NDArrayField, TorchTensorField
+from ffcv import Loader
 
 class DummyActivationsDataset(Dataset):
 

@@ -10,10 +10,10 @@ from torch.utils.data import Dataset, distributed
 from torch.multiprocessing import spawn, Queue
 from torch.distributed import init_process_group
 
-from ffcvx.loader.loader import ORDER_TYPE, OrderOption
-from ffcvx.writer import DatasetWriter
-from ffcvx.fields import IntField, BytesField
-from ffcvx import Loader
+from ffcv.loader.loader import ORDER_TYPE, OrderOption
+from ffcv.writer import DatasetWriter
+from ffcv.fields import IntField, BytesField
+from ffcv import Loader
 
 class DummyDataset(Dataset):
 

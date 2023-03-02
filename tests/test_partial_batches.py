@@ -1,7 +1,7 @@
 from dataclasses import replace
 import torch as ch
-from ffcvx.pipeline.allocation_query import AllocationQuery
-from ffcvx.pipeline.compiler import Compiler
+from ffcv.pipeline.allocation_query import AllocationQuery
+from ffcv.pipeline.compiler import Compiler
 import numpy as np
 from typing import Callable
 from assertpy import assert_that
@@ -12,14 +12,14 @@ from assertpy import assert_that
 from tempfile import NamedTemporaryFile
 from multiprocessing import cpu_count
 
-from ffcvx.pipeline.operation import Operation
-from ffcvx.transforms.ops import ToTensor
-from ffcvx.writer import DatasetWriter
-from ffcvx.reader import Reader
-from ffcvx.loader import Loader
-from ffcvx.fields import IntField, FloatField, BytesField
-from ffcvx.fields.basics import FloatDecoder
-from ffcvx.pipeline.state import State
+from ffcv.pipeline.operation import Operation
+from ffcv.transforms.ops import ToTensor
+from ffcv.writer import DatasetWriter
+from ffcv.reader import Reader
+from ffcv.loader import Loader
+from ffcv.fields import IntField, FloatField, BytesField
+from ffcv.fields.basics import FloatDecoder
+from ffcv.pipeline.state import State
 
 from test_writer import DummyDataset
 

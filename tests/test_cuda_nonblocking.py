@@ -7,13 +7,13 @@ from multiprocessing import cpu_count
 from assertpy import assert_that
 import numpy as np
 from torch.utils.data import Dataset
-from ffcvx import DatasetWriter
-from ffcvx.fields import IntField, NDArrayField
-from ffcvx import Loader
-from ffcvx.fields.basics import IntDecoder
-from ffcvx.fields.ndarray import NDArrayDecoder
-from ffcvx.loader.loader import OrderOption
-from ffcvx.transforms import ToDevice, ToTensor, Squeeze
+from ffcv import DatasetWriter
+from ffcv.fields import IntField, NDArrayField
+from ffcv import Loader
+from ffcv.fields.basics import IntDecoder
+from ffcv.fields.ndarray import NDArrayDecoder
+from ffcv.loader.loader import OrderOption
+from ffcv.transforms import ToDevice, ToTensor, Squeeze
 import time
 
 BATCH = 256

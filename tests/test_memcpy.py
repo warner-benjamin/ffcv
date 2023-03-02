@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 from assertpy import assert_that
 
-from ffcvx.libffcv import memcpy
+from ffcv.libffcv import memcpy
 
 
 MEMCPY_TYPES = [

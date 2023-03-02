@@ -5,11 +5,11 @@ from time import sleep, time
 
 import numpy as np
 from assertpy import assert_that
-from ffcvx.fields import BytesField, IntField, RGBImageField
-from ffcvx.memory_managers import OSCacheManager
-from ffcvx.pipeline.compiler import Compiler
-from ffcvx.reader import Reader
-from ffcvx.writer import DatasetWriter
+from ffcv.fields import BytesField, IntField, RGBImageField
+from ffcv.memory_managers import OSCacheManager
+from ffcv.pipeline.compiler import Compiler
+from ffcv.reader import Reader
+from ffcv.writer import DatasetWriter
 from torch.utils.data import Dataset
 from tqdm import tqdm
 

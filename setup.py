@@ -97,15 +97,15 @@ else:
     extension_kwargs['libraries'].append('pthread')
 
 
-libffcv = Extension('ffcvx._libffcv',
+libffcv = Extension('ffcv._libffcv',
                         **extension_kwargs)
 
-setup(name='ffcvx',
+setup(name='ffcv',
       version='0.0.4',
-      description='FFCVX: Fast Forward Computer Vision',
+      description='FFCV: Fast Forward Computer Vision',
       author='FFCV Team, Benjamin Warner',
       author_email='me@benjaminwarner.dev',
-      url='https://github.com/warner-benjamin/ffcvx',
+      url='https://github.com/warner-benjamin/ffcv',
       license_files = ('LICENSE.txt',),
       packages=find_packages(),
       long_description=long_description,

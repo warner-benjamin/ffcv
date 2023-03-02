@@ -10,11 +10,11 @@ from tqdm import tqdm
 from assertpy import assert_that
 from torch.utils.data import Dataset
 
-from ffcvx.writer import DatasetWriter
-from ffcvx.reader import Reader
-from ffcvx.fields import BytesField, IntField
-from ffcvx.pipeline.compiler import Compiler
-from ffcvx import Loader
+from ffcv.writer import DatasetWriter
+from ffcv.reader import Reader
+from ffcv.fields import BytesField, IntField
+from ffcv.pipeline.compiler import Compiler
+from ffcv import Loader
 
 class DummyDataset(Dataset):
 

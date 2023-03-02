@@ -1,4 +1,4 @@
-name: ffcvx
+name: ffcv
 channels:
   - pytorch
   - nvidia

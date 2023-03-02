@@ -7,11 +7,11 @@ from multiprocessing import cpu_count
 from assertpy import assert_that
 import numpy as np
 from torch.utils.data import Dataset
-from ffcvx import DatasetWriter
-from ffcvx.fields import IntField, JSONField
-from ffcvx.fields.bytes import BytesDecoder
-from ffcvx.fields.basics import IntDecoder
-from ffcvx import Loader
+from ffcv import DatasetWriter
+from ffcv.fields import IntField, JSONField
+from ffcv.fields.bytes import BytesDecoder
+from ffcv.fields.basics import IntDecoder
+from ffcv import Loader
 
 options = list(string.ascii_uppercase + string.digits)
 

@@ -1,5 +1,5 @@
-from ffcvx.transforms.ops import ToTensor
-from ffcvx.fields.rgb_image import RandomResizedCropRGBImageDecoder, SimpleRGBImageDecoder, CenterCropRGBImageDecoder
+from ffcv.transforms.ops import ToTensor
+from ffcv.fields.rgb_image import RandomResizedCropRGBImageDecoder, SimpleRGBImageDecoder, CenterCropRGBImageDecoder
 import numpy as np
 import torch as ch
 from torch.utils.data import Dataset
@@ -8,10 +8,10 @@ from tempfile import NamedTemporaryFile
 from torchvision.datasets import CIFAR10
 from torch.utils.data import Subset
 
-from ffcvx.writer import DatasetWriter
-from ffcvx.fields import IntField, RGBImageField
-from ffcvx.loader import Loader
-from ffcvx.pipeline.compiler import Compiler
+from ffcv.writer import DatasetWriter
+from ffcv.fields import IntField, RGBImageField
+from ffcv.loader import Loader
+from ffcv.pipeline.compiler import Compiler
 
 class DummyDataset(Dataset):
 

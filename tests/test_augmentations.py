@@ -9,14 +9,14 @@ from tempfile import NamedTemporaryFile
 from torchvision.datasets import CIFAR10
 from torchvision.utils import save_image, make_grid
 from torch.utils.data import Subset
-from ffcvx.fields.basics import IntDecoder
-from ffcvx.fields.rgb_image import SimpleRGBImageDecoder
+from ffcv.fields.basics import IntDecoder
+from ffcv.fields.rgb_image import SimpleRGBImageDecoder
 
-from ffcvx.writer import DatasetWriter
-from ffcvx.fields import IntField, RGBImageField
-from ffcvx.loader import Loader
-from ffcvx.pipeline.compiler import Compiler
-from ffcvx.transforms import *
+from ffcv.writer import DatasetWriter
+from ffcv.fields import IntField, RGBImageField
+from ffcv.loader import Loader
+from ffcv.pipeline.compiler import Compiler
+from ffcv.transforms import *
 
 SAVE_IMAGES = True
 IMAGES_TMP_PATH = '/tmp/ffcv_augtest_output'

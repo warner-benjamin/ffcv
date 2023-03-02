@@ -8,11 +8,11 @@ import os
 from assertpy import assert_that
 from tempfile import NamedTemporaryFile
 
-from ffcvx.writer import DatasetWriter
-from ffcvx.reader import Reader
-from ffcvx.fields import IntField, RGBImageField
-from ffcvx.pipeline.compiler import Compiler
-from ffcvx.memory_managers import OSCacheManager
+from ffcv.writer import DatasetWriter
+from ffcv.reader import Reader
+from ffcv.fields import IntField, RGBImageField
+from ffcv.pipeline.compiler import Compiler
+from ffcv.memory_managers import OSCacheManager
 
 class DummyDataset(Dataset):
 

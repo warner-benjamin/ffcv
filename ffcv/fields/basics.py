@@ -45,7 +45,7 @@ class FloatDecoder(BasicDecoder):
 
 class FloatField(Field):
     """
-    A subclass of :class:`~ffcvx.fields.Field` supporting (scalar) floating-point (float64)
+    A subclass of :class:`~ffcv.fields.Field` supporting (scalar) floating-point (float64)
     values.
     """
     def __init__(self):
@@ -70,7 +70,7 @@ class FloatField(Field):
 
 class IntField(Field):
     """
-    A subclass of :class:`~ffcvx.fields.Field` supporting (scalar) integer
+    A subclass of :class:`~ffcv.fields.Field` supporting (scalar) integer
     values.
     """
     @property

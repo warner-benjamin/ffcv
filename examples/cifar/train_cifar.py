@@ -36,14 +36,14 @@ from fastargs import get_current_config, Param, Section
 from fastargs.decorators import param
 from fastargs.validation import And, OneOf
 
-from ffcvx.fields import IntField, RGBImageField
-from ffcvx.fields.decoders import IntDecoder, SimpleRGBImageDecoder
-from ffcvx.loader import Loader, OrderOption
-from ffcvx.pipeline.operation import Operation
-from ffcvx.transforms import RandomHorizontalFlip, Cutout, \
+from ffcv.fields import IntField, RGBImageField
+from ffcv.fields.decoders import IntDecoder, SimpleRGBImageDecoder
+from ffcv.loader import Loader, OrderOption
+from ffcv.pipeline.operation import Operation
+from ffcv.transforms import RandomHorizontalFlip, Cutout, \
     RandomTranslate, Convert, ToDevice, ToTensor, ToTorchImage
-from ffcvx.transforms.common import Squeeze
-from ffcvx.writer import DatasetWriter
+from ffcv.transforms.common import Squeeze
+from ffcv.writer import DatasetWriter
 
 Section('training', 'Hyperparameters').params(
     lr=Param(float, 'The learning rate to use', required=True),

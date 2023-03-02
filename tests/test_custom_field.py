@@ -1,9 +1,9 @@
 import pytest
 import numpy as np
 from uuid import uuid4
-from ffcvx.fields.ndarray import NDArrayField, NDArrayDecoder
-from ffcvx.writer import DatasetWriter
-from ffcvx.loader import Loader, OrderOption
+from ffcv.fields.ndarray import NDArrayField, NDArrayDecoder
+from ffcv.writer import DatasetWriter
+from ffcv.loader import Loader, OrderOption
 from tempfile import NamedTemporaryFile
 
 class StringDecoder(NDArrayDecoder):

@@ -6,12 +6,12 @@ from tempfile import NamedTemporaryFile
 from torchvision.datasets import CIFAR10
 from tqdm import tqdm
 
-from ffcvx.writer import DatasetWriter
-from ffcvx.fields import IntField, RGBImageField
-from ffcvx.fields.decoders import SimpleRGBImageDecoder
-from ffcvx.loader import Loader
-from ffcvx.pipeline.compiler import Compiler
-from ffcvx.transforms import ToTorchImage, ToTensor, NormalizeImage, View, ToDevice
+from ffcv.writer import DatasetWriter
+from ffcv.fields import IntField, RGBImageField
+from ffcv.fields.decoders import SimpleRGBImageDecoder
+from ffcv.loader import Loader
+from ffcv.pipeline.compiler import Compiler
+from ffcv.transforms import ToTorchImage, ToTensor, NormalizeImage, View, ToDevice
 
 class DummyDataset(Dataset):
 
