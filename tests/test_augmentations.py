@@ -107,7 +107,7 @@ def test_random_erasing_slow():
     for comp in [True, False]:
         run_test(100, [
             SimpleRGBImageDecoder(),
-            RandomErasing(.75, fast=False),
+            RandomErasing(.75, fast_fill=False),
             ToTensor(),
             ToTorchImage()
         ], comp)
